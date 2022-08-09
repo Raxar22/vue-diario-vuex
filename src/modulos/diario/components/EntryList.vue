@@ -3,21 +3,43 @@
         <div class="px-2 pt-2">
             <input  type="text"
                     class="form-control"
-                    placeholder="Buscar Entrada"/>
+                    placeholder="Buscar Entrada"
+                    v-model="term"/>
+        </div>
+
+        <div class="mt-2 d-flex flex-column">
+            <button class="btn btn-primary mx-3" @click="$router.push({name: 'Entrada', params: {id:'nuevo'}})">
+                <i class="fa fa-plus-circle"></i> Nueva entrada
+            </button>
         </div>
 
         <div class="entry-scrollarea">
-            <entrada v-for="item in 100" :key="item" ></entrada>
+            <entrada 
+                v-for="entrada in entradasPorTermino" 
+                :key="entrada.id" 
+                :entrada="entrada"></entrada>
         </div>
     </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
+import {defineAsyncComponent } from 'vue'
+import {mapGetters} from 'vuex'
 
 export default {
     components: {
         Entrada: defineAsyncComponent (()=>import('@/modulos/diario/components/Entradas.vue'))
+    },
+    computed: {
+        ...mapGetters ('diario',['obtenerEntradaBySearch']),
+        entradasPorTermino(){
+            return this.obtenerEntradaBySearch (this.term)
+        }
+    },
+    data(){
+        return {
+            term: ''
+        }
     }
 }
 </script>

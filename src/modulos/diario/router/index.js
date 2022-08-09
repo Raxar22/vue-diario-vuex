@@ -15,6 +15,12 @@ export default {
             path:':id',
             name:'Entrada',
             component: () => import (/* webpackChunkName: "Entradas" */ '@/modulos/diario/views/EntradaDiario.vue'),
+            props: (route) =>{
+                return {
+                    id: route.params.id
+                }
+            }
+
         }
     ]
 

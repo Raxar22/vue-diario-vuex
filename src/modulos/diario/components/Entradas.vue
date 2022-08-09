@@ -1,21 +1,50 @@
+
 <template>
     <div  class="entry-container mb-3 pointer p-2"   
-         @click="$router.push({name:'Entrada', params: {id: 10}})">
+         @click="$router.push({name:'Entrada', params: {id: entrada.id}})">
         <div class="entry-title d-flex">
-            <span class="text-success fs-5 fw-bold">Jueves - 15</span>
-            <span class="mx-1 fs-5">Julio</span>
-            <span class="mx-2 fw-ligth">2021</span>
+            <span class="text-success fs-5 fw-bold">{{dia}}</span>
+            <span class="mx-1 fs-5">{{mes}}</span>
+            <span class="mx-2 fw-ligth">{{anno}}</span>
 
         </div>
         <div class="entry-description">
-            Voluptate laborum ex sit labore duis excepteur qui adipisicing. Mollit proident qui anim tempor minim sunt ea sint. Elit enim ad et velit mollit eiusmod nostrud aute tempor nostrud consequat nisi.
+            {{textoCorto}}
         </div>
     </div>
 </template>
 
 <script>
-export default {
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const diasSemana   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
 
+export default {
+    props: {
+        entrada: {
+            type: Object,
+            required: true
+        }
+    },
+    computed:{
+        textoCorto(){
+            return (this.entrada.text.length > 130)
+                ? this.entrada.text.substring(0,130) + '...'
+                : this.entrada.text
+
+        },
+        dia(){
+            const fecha = new Date (this.entrada.fecha)
+            return  `${diasSemana[fecha.getDay()]} - ${fecha.getDate()}` 
+        },
+        mes(){
+            const fecha = new Date (this.entrada.fecha)
+            return meses[fecha.getMonth()]
+        },
+        anno(){
+            const fecha = new Date (this.entrada.fecha)
+            return fecha.getFullYear()
+        }
+    }
 }
 </script>
 
